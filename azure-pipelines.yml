@@ -10,10 +10,23 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- checkout: self
+  fetchDepth: 0
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+
+##### SONARCLOUD #####
+
+
+- task: SonarCloudPrepare@2
+  displayName: 'Prepare analysis configuration'
+  inputs:
+    SonarCloud: 'SonarCloud_Token'
+    organization: 'romi29396'
+    scannerMode: 'MSBuild'
+    projectKey: 'romi29396_ CPlusPlus'
+    projectName: 'CPlusPlus'
+
+- task: SonarCloudAnalyze@2
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
+
